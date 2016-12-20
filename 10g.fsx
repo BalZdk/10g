@@ -26,7 +26,8 @@ type animal(Weight : float, MaxSpeed : float) =
         printfn "It took the aminal %.0f minutes to run 10 km" ((10.0 / this.speed)*60.0)
 
     //sets needed food based on weight
-    member this.setNeededFood() =
+    abstract member setNeededFood : unit -> unit
+    default this.setNeededFood() =
         this.neededFood <- this.weight * 0.5
 
     //secondary constructor
@@ -38,8 +39,7 @@ type animal(Weight : float, MaxSpeed : float) =
 type carnivore(Weight : float, _maxSpeed : float) =
     inherit animal(Weight, _maxSpeed)
 
-    member this.setNeededFood() =
-        this.neededFood <- this.weight * 0.08
+    override this.setNeededFood() = this.neededFood <- this.weight * 0.08
 
     new (_maxSpeed) =
         let weight = float(rng.Next(70, 301))
@@ -48,8 +48,7 @@ type carnivore(Weight : float, _maxSpeed : float) =
 type herbivore(Weight : float, _maxSpeed : float) =
     inherit animal(Weight, _maxSpeed)
 
-    member this.setNeededFood() =
-        this.neededFood <- this.weight * 0.4
+    override this.setNeededFood() = this.neededFood <- this.weight * 0.4
 
     new (_maxSpeed) =
         let weight = float(rng.Next(70, 301))
