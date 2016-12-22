@@ -1,4 +1,4 @@
-let rng = new System.Random()
+let rng = new System.Random()   
 
 type animal(Weight : float, MaxSpeed : float) =
     let mutable Speed = 0.0
@@ -17,13 +17,17 @@ type animal(Weight : float, MaxSpeed : float) =
     //// methods
     //generates random value, and assigns current speed based on value
     member this.setCurrentSpeed() =
-        let random = float(rng.Next(0,101)) / 100.0
+        let random = float(rng.Next(1,101)) / 100.0
         this.speed <- this.maxSpeed * random
 
+        (*
         printfn "The aminal has eaten %.2f percent of the required food" (random * 100.0)
         printfn "The aminal has eaten %.2f kg of food" (this.neededFood * random)
         printfn "The aminal should have eaten %.2f kg of food" this.neededFood
         printfn "It took the aminal %.0f minutes to run 10 km" ((10.0 / this.speed)*60.0)
+        *)
+        ((10.0 / this.speed)*60.0)
+
 
     //sets needed food based on weight
     abstract member setNeededFood : unit -> unit
@@ -56,20 +60,38 @@ type herbivore(Weight : float, _maxSpeed : float) =
 
 
 
-let race =
+let race() =
     let cheetah = new carnivore(50.0, 114.0)
     let wildebeest = new herbivore(200.0, 80.0)
     let antelope = new herbivore(50.0, 95.0)
 
-    for i = 0 to 2 do
-        printfn "----------\nCheetah:"
+    let mutable cheetah_wins = 0 
+    let mutable wildebeest_wins = 0
+    let mutable antelope_wins = 0
+
+    for i = 0 to 10000000 do
         cheetah.setNeededFood()
-        cheetah.setCurrentSpeed()
-
-        printfn "----------\nWildebeest:"
+        let a = cheetah.setCurrentSpeed()
         wildebeest.setNeededFood()
-        wildebeest.setCurrentSpeed()
-
-        printfn "----------\nAntelope:"
+        let b = wildebeest.setCurrentSpeed()
         antelope.setNeededFood()
-        antelope.setCurrentSpeed()
+        let c = antelope.setCurrentSpeed()      
+        
+
+
+        if a > b && a > c then 
+          cheetah_wins <- cheetah_wins + 1
+        elif b > a && b > c then
+          wildebeest_wins <- wildebeest_wins + 1
+        elif c > a && c > b then
+          antelope_wins <- antelope_wins + 1 
+        else 
+          printfn "DRAW!"
+          printfn "values: %A %A %A" a b c
+
+    printfn "%A %A %A" cheetah_wins wildebeest_wins antelope_wins
+
+
+        
+
+race()
