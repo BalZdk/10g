@@ -1,4 +1,4 @@
-let rng = new System.Random()   
+let rng = new System.Random()
 
 type animal(Weight : float, MaxSpeed : float) =
     let mutable Speed = 0.0
@@ -16,17 +16,10 @@ type animal(Weight : float, MaxSpeed : float) =
 
     //// methods
     //generates random value, and assigns current speed based on value
-    member this.setCurrentSpeed() =
+    member this.setCurrentSpeed(percent) =
         let random = float(rng.Next(1,101)) / 100.0
-        this.speed <- this.maxSpeed * random
-
-        (*
-        printfn "The aminal has eaten %.2f percent of the required food" (random * 100.0)
-        printfn "The aminal has eaten %.2f kg of food" (this.neededFood * random)
-        printfn "The aminal should have eaten %.2f kg of food" this.neededFood
-        printfn "It took the aminal %.0f minutes to run 10 km" ((10.0 / this.speed)*60.0)
-        *)
-        ((10.0 / this.speed)*60.0)
+        this.speed <- this.maxSpeed * percent
+        ()
 
 
     //sets needed food based on weight
@@ -65,34 +58,57 @@ let race() =
     let wildebeest = new herbivore(200.0, 95.0)
     let antelope = new herbivore(50.0, 80.0)
 
-    let mutable cheetah_wins = 0 
+    let mutable cheetah_wins = 0
     let mutable wildebeest_wins = 0
     let mutable antelope_wins = 0
     let mutable draw = 0
+    let mutable random = 0.0
 
-    for i = 0 to 100 do
+
+    for i = 0 to 2 do
+        random <- float(rng.Next(1,101)) / 100.0
         cheetah.setNeededFood()
-        let a = cheetah.setCurrentSpeed()
-        printfn "cheetah: %A" a
+        cheetah.setCurrentSpeed(random)
+        printfn "Cheetah:"
+        printfn "Percent generated: %.2f" (random*100.0)
+        printfn "Food eaten: %A" (cheetah.neededFood * random)
+        printfn "Food needed: %A" (cheetah.neededFood)
+        printfn "Time to run 10Km: %.2f" ((10.0/cheetah.speed)*60.0)
+
+
+
+        random <- float(rng.Next(1,101)) / 100.0
         wildebeest.setNeededFood()
-        let b = wildebeest.setCurrentSpeed()
-        printfn "wildebeest: %A" b
+        wildebeest.setCurrentSpeed(random)
+        printfn "WildeBeest:"
+        printfn "Percent generated: %.2f" (random*100.0)
+        printfn "Food eaten: %A" (wildebeest.neededFood * random)
+        printfn "Food needed: %A" (wildebeest.neededFood)
+        printfn "Time to run 10Km: %.2f" ((10.0/wildebeest.speed)*60.0)
+
+
+        random <- float(rng.Next(1,101)) / 100.0
         antelope.setNeededFood()
-        let c = antelope.setCurrentSpeed()      
-        printfn "antilope: %A" c        
-        
+        antelope.setCurrentSpeed(random)
+        printfn "Antelope:"
+        printfn "Percent generated: %.2f" (random*100.0)
+        printfn "Food eaten: %A" (antelope.neededFood * random)
+        printfn "Food needed: %A" (antelope.neededFood)
+        printfn "Time to run 10Km: %.2f" ((10.0/antelope.speed)*60.0)
+
         // check who won each race
-        if a < b && a < c then 
+        if cheetah.speed > wildebeest.speed && cheetah.speed > antelope.speed then
           cheetah_wins <- cheetah_wins + 1
 
-        elif b < a && b < c then
-          wildebeest_wins <- wildebeest_wins + 1
-        elif c < a && c < b then
-          antelope_wins <- antelope_wins + 1 
-        else 
-          draw <- draw + 1
-          //printfn "values: %A %A %A Draws: %A" a b c draw
+        elif wildebeest.speed > cheetah.speed && wildebeest.speed > antelope.speed then
+            wildebeest_wins <- wildebeest_wins + 1
+        elif antelope.speed > cheetah.speed && antelope.speed > wildebeest.speed then
+            antelope_wins <- antelope_wins + 1
+        else
+            draw <- draw + 1
+        printfn ""
     // print results
-    printfn "%A %A %A %A " cheetah_wins wildebeest_wins antelope_wins draw
+    printfn ""
+    printfn " Cheetah: %A\n Wildebeest: %A\n Antelope: %A\n Draw: %A " cheetah_wins wildebeest_wins antelope_wins draw
 
 race()
