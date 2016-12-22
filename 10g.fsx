@@ -62,36 +62,37 @@ type herbivore(Weight : float, _maxSpeed : float) =
 
 let race() =
     let cheetah = new carnivore(50.0, 114.0)
-    let wildebeest = new herbivore(200.0, 80.0)
-    let antelope = new herbivore(50.0, 95.0)
+    let wildebeest = new herbivore(200.0, 95.0)
+    let antelope = new herbivore(50.0, 80.0)
 
     let mutable cheetah_wins = 0 
     let mutable wildebeest_wins = 0
     let mutable antelope_wins = 0
+    let mutable draw = 0
 
-    for i = 0 to 10000000 do
+    for i = 0 to 100 do
         cheetah.setNeededFood()
         let a = cheetah.setCurrentSpeed()
+        printfn "cheetah: %A" a
         wildebeest.setNeededFood()
         let b = wildebeest.setCurrentSpeed()
+        printfn "wildebeest: %A" b
         antelope.setNeededFood()
         let c = antelope.setCurrentSpeed()      
+        printfn "antilope: %A" c        
         
-
-
-        if a > b && a > c then 
+        // check who won each race
+        if a < b && a < c then 
           cheetah_wins <- cheetah_wins + 1
-        elif b > a && b > c then
+
+        elif b < a && b < c then
           wildebeest_wins <- wildebeest_wins + 1
-        elif c > a && c > b then
+        elif c < a && c < b then
           antelope_wins <- antelope_wins + 1 
         else 
-          printfn "DRAW!"
-          printfn "values: %A %A %A" a b c
-
-    printfn "%A %A %A" cheetah_wins wildebeest_wins antelope_wins
-
-
-        
+          draw <- draw + 1
+          //printfn "values: %A %A %A Draws: %A" a b c draw
+    // print results
+    printfn "%A %A %A %A " cheetah_wins wildebeest_wins antelope_wins draw
 
 race()
