@@ -1,3 +1,4 @@
+//test
 let rng = new System.Random()
 
 type animal(Weight : float, MaxSpeed : float) =
