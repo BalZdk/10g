@@ -19,7 +19,10 @@ type animal(Weight : float, MaxSpeed : float) =
     //generates random value, and assigns current speed based on value
     member this.setCurrentSpeed(percent) =
         let random = float(rng.Next(1,101)) / 100.0
-        this.speed <- this.maxSpeed * percent
+        if (this.maxSpeed * percent > this.maxSpeed) then
+            this.speed <- this.maxSpeed
+        else
+            this.speed <- this.maxSpeed * percent
         ()
 
 
@@ -110,6 +113,24 @@ let race() =
         printfn ""
     // print results
     printfn ""
-    printfn " Cheetah: %A\n Wildebeest: %A\n Antelope: %A\n Draw: %A " cheetah_wins wildebeest_wins antelope_wins draw
+    printfn "Wins:\n Cheetah: %A\n Wildebeest: %A\n Antelope: %A\n Draw: %A " cheetah_wins wildebeest_wins antelope_wins draw
 
 race()
+
+//// Tests (Not really that much to test here, to be honest...)
+printfn "\n\n"
+printfn "Aminal testing for fun and profit\n---------------------------------"
+let testAminal = new animal(100.0, 20.0)
+//neededFood
+testAminal.setNeededFood()
+printfn "neededFood        | Test 1:  %b" (testAminal.neededFood = 50.0)
+printfn ""
+//setCurrentSpeed
+testAminal.setCurrentSpeed(1.0)
+printfn "currentSpeed      | Test 1:  %b" (testAminal.speed = 20.0)
+testAminal.setCurrentSpeed(0.5)
+printfn "currentSpeed      | Test 2:  %b" (testAminal.speed = 10.0)
+testAminal.setCurrentSpeed(0.0)
+printfn "currentSpeed      | Test 3:  %b" (testAminal.speed = 0.0)
+testAminal.setCurrentSpeed(2.0)
+printfn "currentSpeed      | Test 4:  %b" (testAminal.speed = 20.0)
